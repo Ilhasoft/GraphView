@@ -57,7 +57,7 @@ abstract public class GraphView extends LinearLayout {
 		static final float BORDER = 20;
 	}
 
-	private class GraphViewContentView extends View {
+	public class GraphViewContentView extends View {
 		private float lastTouchEventX;
 		private float graphwidth;
 		private boolean scrollingStarted;
@@ -75,8 +75,7 @@ abstract public class GraphView extends LinearLayout {
 		 */
 		@Override
 		protected void onDraw(Canvas canvas) {
-
-			paint.setAntiAlias(true);
+            paint.setAntiAlias(true);
 
 			// normal
 			paint.setStrokeWidth(0);
@@ -160,8 +159,8 @@ abstract public class GraphView extends LinearLayout {
 			if (showLegend) drawLegend(canvas, height, width);
 		}
 
-		private void onMoveGesture(float f) {
-			// view port update
+		public void onMoveGesture(float f) {
+            // view port update
 			if (viewportSize != 0) {
 				viewportStart -= f*viewportSize/graphwidth;
 
@@ -1048,4 +1047,7 @@ abstract public class GraphView extends LinearLayout {
         return showVerticalLabels;
     }
 
+    public GraphViewContentView getGraphViewContentView() {
+        return graphViewContentView;
+    }
 }

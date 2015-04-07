@@ -12,7 +12,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
@@ -35,4 +35,3 @@ task makeJar(type: Copy) {
 
 makeJar.dependsOn(clearJar, build)
 
-apply from: './maven_push.gradle'

@@ -22,9 +22,12 @@ package com.jjoe64.graphview;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Shader;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.jjoe64.graphview.GraphViewSeries.GraphViewSeriesStyle;
 
@@ -37,7 +40,13 @@ public class LineGraphView extends GraphView {
 	private boolean drawDataPoints;
 	private float dataPointsRadius = 10f;
 
-	public LineGraphView(Context context, AttributeSet attrs) {
+    private int color1;
+    private int color2;
+    private boolean gradient = false;
+
+    private LinearGradient linearGradient;
+
+    public LineGraphView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		paintBackground = new Paint();
@@ -138,7 +147,20 @@ public class LineGraphView extends GraphView {
 		return drawDataPoints;
 	}
 
-	/**
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setupGradient();
+    }
+
+    private void setupGradient() {
+        if(gradient && linearGradient == null && getMeasuredHeight() > 0) {
+            linearGradient = new LinearGradient(0, 0 , 0, getMeasuredHeight()*1.3f, color1, color2, Shader.TileMode.MIRROR);
+            paintBackground.setShader(linearGradient);
+        }
+    }
+
+    /**
 	 * sets the background color for the series.
 	 * This is not the background color of the whole graph.
 	 * @see #setDrawBackground(boolean)
@@ -147,6 +169,12 @@ public class LineGraphView extends GraphView {
 	public void setBackgroundColor(int color) {
 		paintBackground.setColor(color);
 	}
+
+    public void setBackgroundGradient(int color1, int color2) {
+        this.color1 = color1;
+        this.color2 = color2;
+        this.gradient = true;
+    }
 
 	/**
 	 * sets the radius of the circles at the data points.
